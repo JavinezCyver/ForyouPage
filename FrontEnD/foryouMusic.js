@@ -260,6 +260,10 @@
       const saved = await readPlaylist();
       // Preserve the single song saved by the previous music player.
       if (saved) files = saved.files || (saved.file ? [saved.file] : []);
+      // Apply published song replacements to playlists saved before the update.
+      files = files.map((file) => window.FORYOU_MEDIA.tracks.find((track) =>
+        track.replaces && track.replaces === (typeof file === "string" ? file : file.name)
+      ) || file);
     } catch {
       database = null;
       status.textContent = "Songs you add will be available for this visit only.";
