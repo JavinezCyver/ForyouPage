@@ -143,6 +143,11 @@
   }
 
   function showMedia(media, direction) {
+    const visible = slide ? slide.incoming : stage.querySelector(".gallery-image");
+    // Continue from the visible position if a fast swipe interrupts a slide.
+    const visibleStyle = visible ? getComputedStyle(visible) : null;
+    const startTransform = visibleStyle?.transform || "none";
+    const startOpacity = visibleStyle?.opacity || "1";
     finishSlide();
     const outgoing = stage.querySelector(".gallery-image");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -152,10 +157,10 @@
       return;
     }
     stage.append(media);
-    const options = { duration: 180, easing: "cubic-bezier(0.22, 1, 0.36, 1)" };
+    const options = { duration: 220, easing: "cubic-bezier(0.25, 0.1, 0.25, 1)" };
     const animations = [
       outgoing.animate([
-        { transform: "translate3d(0, 0, 0)", opacity: 1 },
+        { transform: startTransform, opacity: startOpacity },
         { transform: `translate3d(${-direction * 100}%, 0, 0)`, opacity: 0 }
       ], { ...options, fill: "forwards" }),
       media.animate([
@@ -163,7 +168,7 @@
         { transform: "translate3d(0, 0, 0)", opacity: 1 }
       ], options)
     ];
-    const currentSlide = { outgoing, animations };
+    const currentSlide = { outgoing, incoming: media, animations };
     slide = currentSlide;
     // Navigation stays enabled; a new swipe settles this slide and starts the next.
     Promise.all(animations.map((animation) => animation.finished)).then(() => {
@@ -225,7 +230,6 @@
 
   function renderMedia(direction = 0) {
     const token = ++generation;
-    finishSlide();
     const album = albums.get(activeId);
     if (album && album.items.length) {
       const media = makeMedia(album.items[mediaIndex], mediaIndex, album.items.length);

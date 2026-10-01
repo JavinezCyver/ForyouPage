@@ -164,19 +164,20 @@ button:disabled { cursor: default; opacity: 0.45; }
 body:has(#album-viewer[open]) { overflow: hidden; }
 
 /* A modal album viewer with immediate photo navigation. */
-#album-viewer { width: min(760px, calc(100% - 24px)); max-height: 92vh; max-height: 92svh; padding: 22px; border: 0; border-radius: 20px; background: #fffaf7; color: #49303d; box-shadow: 0 24px 80px #39263250; }
+#album-viewer { width: min(760px, calc(100% - 24px)); max-height: 92vh; max-height: 92svh; padding: 22px; border: 0; border-radius: 20px; background: #fffaf7; color: #49303d; box-shadow: 0 24px 80px #39263250; overscroll-behavior: contain; scrollbar-gutter: stable; }
 #album-viewer[open] { animation: album-enter 0.3s ease-out; }
 #album-viewer::backdrop { background: #392632b3; backdrop-filter: blur(6px); }
 .viewer-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
 .viewer-heading h2 { margin: 0; font: 26px Georgia, serif; }
 .viewer-close, .viewer-controls button { width: 44px; height: 44px; border: 0; border-radius: 50%; background: #f5dce7; color: #942652; font-size: 25px; }
-.gallery-stage { position: relative; display: grid; place-items: center; height: min(55vh, 480px); height: min(55svh, 480px); overflow: hidden; border-radius: 12px; background: #f1e7ec; touch-action: pan-y pinch-zoom; }
+.gallery-stage { position: relative; display: grid; place-items: center; height: min(55vh, 480px); height: min(55svh, 480px); overflow: hidden; border-radius: 12px; background: #f1e7ec; touch-action: pan-y pinch-zoom; contain: layout paint; }
 .gallery-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; user-select: none; }
 .gallery-video { inset: 0 24px; width: calc(100% - 48px); touch-action: auto; background: #342630; }
 .gallery-empty { max-width: 300px; padding: 24px; color: #805769; text-align: center; line-height: 1.7; }
 .viewer-controls { display: flex; align-items: center; justify-content: center; gap: 24px; margin-top: 16px; }
 #photo-counter { min-width: 100px; margin: 0; text-align: center; color: #805769; font-size: 14px; }
 #viewer-help { margin: 14px 0 0; color: #805769; text-align: center; font-size: 12px; }
+#viewer-status { height: 3.2em; margin: 10px 0 0; max-width: none; overflow: auto; }
 @keyframes album-enter { from { opacity: 0; transform: translateY(24px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
 /* CSS flowers decorate the edges behind the content. */
