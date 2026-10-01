@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f8c8dc">
+  <title>A little letter | ForYou</title>
+  <link rel="stylesheet" href="foryouBody2.css">
+  <script src="foryouAlbums.js" defer></script>
+  <script src="foryouMusic.js" defer></script>
+</head>
+<body>
+  <div class="falling-hearts" aria-hidden="true">
+    <span>&#9829;</span><span>&#9825;</span><span>&#9829;</span><span>&#9825;</span>
+    <span>&#9829;</span><span>&#9825;</span><span>&#9829;</span><span>&#9825;</span>
+    <span>&#9829;</span><span>&#9825;</span><span>&#9829;</span><span>&#9825;</span>
+  </div>
+  <div class="flower-garden" aria-hidden="true">
+    <div class="flower flower-one"><div class="bloom"><i></i><i></i><i></i><i></i><i></i><i></i><span></span></div></div>
+    <div class="flower flower-two"><div class="bloom"><i></i><i></i><i></i><i></i><i></i><i></i><span></span></div></div>
+    <div class="flower flower-three"><div class="bloom"><i></i><i></i><i></i><i></i><i></i><i></i><span></span></div></div>
+    <div class="flower flower-four"><div class="bloom"><i></i><i></i><i></i><i></i><i></i><i></i><span></span></div></div>
+    <div class="flower flower-five"><div class="bloom"><i></i><i></i><i></i><i></i><i></i><i></i><span></span></div></div>
+    <div class="flower flower-six"><div class="bloom"><i></i><i></i><i></i><i></i><i></i><i></i><span></span></div></div>
+  </div>
+
+  <main class="keepsake-page">
+    <header class="page-heading">
+      <p class="brand">ForYou</p>
+      <h1>A little letter, a lot of love.</h1>
+      <p>A place for words and moments worth keeping.</p>
+    </header>
+
+    <section class="music-player" aria-labelledby="music-title">
+      <div class="music-heading">
+        <div>
+          <h2 id="music-title"><span aria-hidden="true">&#9835;</span> A song for this moment</h2>
+          <p id="music-name">Add three or more songs to set the mood.</p>
+        </div>
+        <button id="choose-music" type="button" disabled>Add songs</button>
+        <input id="music-file" type="file" accept="audio/*" multiple hidden>
+      </div>
+      <audio id="letter-music" controls preload="auto" aria-label="Letter background music" hidden></audio>
+      <ol id="music-playlist" class="music-playlist" aria-label="Songs in playback order" hidden></ol>
+      <p id="music-status" role="status" aria-live="polite">Songs play in order automatically, then the playlist repeats. Saved in this browser.</p>
+    </section>
+
+    <div class="keepsake-layout">
+      <section class="photo-column photos-left" aria-label="Albums 1 and 2">
+        <figure class="photo-card" data-album="1">
+          <button class="album-open" type="button" aria-label="Open Album 1">
+            <div class="photo-placeholder" data-cover><span aria-hidden="true">&#9825;</span><p>Add your memories</p></div>
+            <span class="album-title">Album 1</span><span class="album-count" data-count>0 items</span>
+          </button>
+          <figcaption>A favorite moment</figcaption>
+          <button class="album-add" type="button" disabled>Add photos / videos</button>
+          <input class="album-input" type="file" accept="image/*,video/*" multiple hidden>
+        </figure>
+        <figure class="photo-card" data-album="2">
+          <button class="album-open" type="button" aria-label="Open Album 2">
+            <div class="photo-placeholder" data-cover><span aria-hidden="true">&#10047;</span><p>Add your memories</p></div>
+            <span class="album-title">Album 2</span><span class="album-count" data-count>0 items</span>
+          </button>
+          <figcaption>The little things</figcaption>
+          <button class="album-add" type="button" disabled>Add photos / videos</button>
+          <input class="album-input" type="file" accept="image/*,video/*" multiple hidden>
+        </figure>
+      </section>
+
+      <article class="letter" aria-labelledby="letter-title">
+        <div class="letter-seal" aria-hidden="true">&#9825;</div>
+        <p class="letter-eyebrow">JUST FOR YOU</p>
+        <h2 id="letter-title">Dear Cheryl my love!,</h2>
+        <!-- Edit this sample letter to add your own personal message. -->
+        <div class="letter-content">
+          <p>I made this little corner of the world to leave you something simple: a few words, some favorite moments, and flowers that never stop blooming.</p>
+          <p>I hope it brings a smile to your face and reminds you how much you matter. Even on an ordinary day, you deserve a little happiness.</p>
+          <p>Here is to more memories, more laughter, and all the lovely things still waiting to bloom.</p>
+        </div>
+        <p class="signature">With love,<br><span>Someone who cares</span></p>
+      </article>
+
+      <section class="photo-column photos-right" aria-label="Albums 3 and 4">
+        <figure class="photo-card" data-album="3">
+          <button class="album-open" type="button" aria-label="Open Album 3">
+            <div class="photo-placeholder" data-cover><span aria-hidden="true">&#10047;</span><p>Add your memories</p></div>
+            <span class="album-title">Album 3</span><span class="album-count" data-count>0 items</span>
+          </button>
+          <figcaption>A reason to smile</figcaption>
+          <button class="album-add" type="button" disabled>Add photos / videos</button>
+          <input class="album-input" type="file" accept="image/*,video/*" multiple hidden>
+        </figure>
+        <figure class="photo-card" data-album="4">
+          <button class="album-open" type="button" aria-label="Open Album 4">
+            <div class="photo-placeholder" data-cover><span aria-hidden="true">&#9825;</span><p>Add your memories</p></div>
+            <span class="album-title">Album 4</span><span class="album-count" data-count>0 items</span>
+          </button>
+          <figcaption>More memories to come</figcaption>
+          <button class="album-add" type="button" disabled>Add photos / videos</button>
+          <input class="album-input" type="file" accept="image/*,video/*" multiple hidden>
+        </figure>
+      </section>
+    </div>
+
+    <p id="album-status" class="album-status" role="status" aria-live="polite">Choose “Add photos / videos” to fill an album. Photos and videos are saved in this browser.</p>
+    <footer><a href="foryouBody.html">&#8592; Back to your flower</a></footer>
+  </main>
+  <dialog id="album-viewer" aria-labelledby="album-viewer-title" aria-describedby="viewer-help">
+    <header class="viewer-heading">
+      <h2 id="album-viewer-title">Album 1</h2>
+      <button id="close-album" class="viewer-close" type="button" aria-label="Close album" autofocus>&#215;</button>
+    </header>
+    <div id="gallery-stage" class="gallery-stage">
+      <p class="gallery-empty">Your memories belong here. Add photos or videos to get started.</p>
+    </div>
+    <div class="viewer-controls">
+      <button id="previous-photo" type="button" aria-label="Previous item">&#8592;</button>
+      <p id="photo-counter" role="status" aria-live="polite">0 items</p>
+      <button id="next-photo" type="button" aria-label="Next item">&#8594;</button>
+    </div>
+    <p id="viewer-help">Swipe beside videos or use the arrows. Tap a video to play.</p>
+    <p id="viewer-status" class="album-status" role="status" aria-live="polite"></p>
+    <div class="viewer-actions">
+      <button id="viewer-add" class="album-add" type="button" disabled>Add photos / videos</button>
+      <button id="viewer-remove" class="album-remove" type="button" disabled>Remove item</button>
+    </div>
+  </dialog>
+</body>
+</html>
+

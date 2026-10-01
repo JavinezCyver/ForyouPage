@@ -1,0 +1,404 @@
+﻿/* Page background and centered card */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: 0;
+  padding: 24px;
+  background: #f8c8dc;
+  color: #392632;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.login-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 400px;
+  padding: 36px;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 12px 36px rgba(109, 42, 72, 0.12);
+}
+
+.brand {
+  margin: 0 0 16px;
+  color: #ad285e;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+}
+
+h1 {
+  margin: 0 0 10px;
+  font-size: 30px;
+  text-align: center;
+}
+
+.description {
+  margin: 0 0 28px;
+  color: #766570;
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* Login form */
+.field {
+  margin-bottom: 20px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+input, button {
+  font: inherit;
+}
+
+.field input {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid #ded4d9;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #392632;
+  font-size: 14px;
+}
+
+.field input::placeholder {
+  color: #887681;
+}
+
+.field input:focus {
+  border-color: #ad285e;
+}
+
+input:focus-visible, button:focus-visible {
+  outline: 3px solid #ad285e;
+  outline-offset: 3px;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin-bottom: 24px;
+  color: #766570;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.remember-me input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: #ad285e;
+}
+
+button {
+  width: 100%;
+  min-height: 48px;
+  border: none;
+  border-radius: 8px;
+  background: #ad285e;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #90204d;
+}
+
+.login-error {
+  margin: 0 0 18px;
+  color: #a31b45;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.back-link {
+  display: block;
+  color: #ad285e;
+  text-align: center;
+  font-weight: 600;
+}
+
+.back-link:focus-visible {
+  outline: 3px solid #ad285e;
+  outline-offset: 3px;
+}
+
+/* Decorative flowers: each petal opens outward from the center. */
+.flower-garden {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.flower {
+  --petal-color: #e987b0;
+  --bloom-delay: 0s;
+  position: absolute;
+  width: 120px;
+  height: 260px;
+  transform-origin: bottom center;
+}
+
+.flower-one { left: 6%; bottom: 7%; transform: rotate(-12deg); }
+.flower-two {
+  --petal-color: #fff0f6;
+  --bloom-delay: -2s;
+  right: 6%;
+  bottom: 10%;
+  transform: rotate(15deg) scale(0.9);
+}
+.flower-three {
+  --petal-color: #fff0f6;
+  --bloom-delay: -4s;
+  left: 23%;
+  bottom: -65px;
+  transform: rotate(8deg) scale(0.75);
+}
+.flower-four {
+  --bloom-delay: -6s;
+  right: 23%;
+  bottom: -85px;
+  transform: rotate(-10deg) scale(0.8);
+}
+
+/* Additional blooms along the sides and upper corners. */
+.flower-five {
+  --petal-color: #d5b3e6;
+  --bloom-delay: -1s;
+  left: 1%; bottom: 42%;
+  transform: rotate(-18deg) scale(0.65);
+}
+.flower-six {
+  --petal-color: #fff0f6;
+  --bloom-delay: -3s;
+  right: 1%; bottom: 45%;
+  transform: rotate(20deg) scale(0.7);
+}
+.flower-seven {
+  --bloom-delay: -5s;
+  left: 15%; top: -30px;
+  transform: rotate(-15deg) scale(0.75);
+  transform-origin: top center;
+}
+.flower-eight {
+  --petal-color: #d5b3e6;
+  --bloom-delay: -7s;
+  right: 15%; top: -20px;
+  transform: rotate(15deg) scale(0.65);
+  transform-origin: top center;
+}
+.flower-nine {
+  --petal-color: #fff0f6;
+  --bloom-delay: -1.5s;
+  left: 14%; bottom: -25px;
+  transform: rotate(-18deg) scale(0.6);
+}
+.flower-ten {
+  --petal-color: #d5b3e6;
+  --bloom-delay: -3.5s;
+  right: 14%; bottom: -20px;
+  transform: rotate(18deg) scale(0.65);
+}
+.flower-eleven {
+  --petal-color: #fff0f6;
+  --bloom-delay: -5.5s;
+  left: 1%; top: -10px;
+  transform: rotate(-10deg) scale(0.55);
+  transform-origin: top center;
+}
+.flower-twelve {
+  --bloom-delay: -7.5s;
+  right: 1%; top: -10px;
+  transform: rotate(10deg) scale(0.55);
+  transform-origin: top center;
+}
+
+/* Stem and leaf */
+.flower::before {
+  content: "";
+  position: absolute;
+  top: 60px;
+  bottom: 0;
+  left: 57px;
+  width: 6px;
+  border-radius: 6px;
+  background: #7caa80;
+}
+
+.flower::after {
+  content: "";
+  position: absolute;
+  top: 140px;
+  left: 62px;
+  width: 45px;
+  height: 22px;
+  border-radius: 0 85% 0 85%;
+  background: #8ab78d;
+  transform: rotate(-28deg);
+  transform-origin: left center;
+}
+
+.blossom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 120px;
+  height: 120px;
+}
+
+.blossom i {
+  --angle: 0deg;
+  position: absolute;
+  bottom: 60px;
+  left: 39px;
+  width: 42px;
+  height: 58px;
+  border-radius: 55% 55% 42% 42%;
+  background: var(--petal-color);
+  box-shadow: inset 0 -8px 12px rgba(173, 40, 94, 0.1);
+  transform-origin: center bottom;
+  transform: rotate(var(--angle)) scale(1);
+  animation: bloom 8s ease-in-out infinite;
+  animation-delay: var(--bloom-delay);
+}
+
+.blossom i:nth-child(2) { --angle: 60deg; }
+.blossom i:nth-child(3) { --angle: 120deg; }
+.blossom i:nth-child(4) { --angle: 180deg; }
+.blossom i:nth-child(5) { --angle: 240deg; }
+.blossom i:nth-child(6) { --angle: 300deg; }
+
+.flower-center {
+  position: absolute;
+  top: 47px;
+  left: 47px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #f6ce75;
+  box-shadow: inset 0 -3px 5px rgba(156, 108, 27, 0.12);
+}
+
+@keyframes bloom {
+  0%, 100% {
+    transform: rotate(var(--angle)) scale(0.15);
+    opacity: 0.4;
+  }
+  35%, 70% {
+    transform: rotate(var(--angle)) scale(1);
+    opacity: 1;
+  }
+}
+
+/* A row of grass tufts with different blade heights and green tones. */
+.grass {
+  position: absolute;
+  inset: auto 0 -8px;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 100px;
+  padding: 0 12px;
+}
+
+.grass::before {
+  content: "";
+  position: absolute;
+  inset: auto -20px 0;
+  height: 24px;
+  border-radius: 50% 50% 0 0;
+  background: #8ab78d;
+}
+
+.grass span {
+  --grass-color: #8ab78d;
+  position: relative;
+  flex: 0 0 10px;
+  height: 58px;
+  border-radius: 100% 0 0 0;
+  background: var(--grass-color);
+  transform: rotate(-8deg);
+  transform-origin: bottom center;
+}
+
+.grass span::before, .grass span::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 9px;
+  height: 80%;
+  border-radius: 100% 0 0 0;
+  background: var(--grass-color);
+  transform-origin: bottom center;
+}
+
+.grass span::before {
+  left: -5px;
+  transform: rotate(-25deg);
+}
+
+.grass span::after {
+  right: -5px;
+  height: 110%;
+  border-radius: 0 100% 0 0;
+  transform: rotate(28deg);
+}
+
+.grass span:nth-child(3n) { height: 78px; --grass-color: #7caa80; }
+.grass span:nth-child(4n) { height: 43px; transform: rotate(12deg); }
+.grass span:nth-child(5n) { height: 65px; --grass-color: #a1c599; }
+
+@media (max-width: 420px) {
+  body {
+    padding: 16px;
+  }
+
+  .login-card {
+    padding: 28px 24px;
+  }
+
+  .flower-one { left: -35px; bottom: 0; }
+  .flower-two { right: -35px; bottom: 25px; }
+  .flower-three, .flower-four { display: none; }
+  .flower-five { left: -45px; bottom: 45%; }
+  .flower-six { right: -45px; bottom: 48%; }
+  .flower-seven { left: 12%; top: 5px; transform: rotate(-15deg) scale(0.5); }
+  .flower-eight { right: 12%; top: 5px; transform: rotate(15deg) scale(0.5); }
+  .flower-nine { left: 12%; bottom: -70px; }
+  .flower-ten { right: 12%; bottom: -65px; }
+  .flower-eleven, .flower-twelve { display: none; }
+  .grass { height: 70px; }
+  .grass span { flex-basis: 6px; height: 40px; }
+  .grass span:nth-child(3n) { height: 55px; }
+  .grass span:nth-child(4n) { height: 30px; }
+  .grass span:nth-child(5n) { height: 45px; }
+  .grass span::before, .grass span::after { width: 6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blossom i {
+    animation: none;
+    opacity: 1;
+  }
+}

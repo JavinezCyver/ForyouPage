@@ -1,0 +1,137 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 32px 20px;
+  background: radial-gradient(ellipse at 50% 40%, #ffeaf3 0%, #f8c8dc 70%);
+  color: #392632;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.flower-page { width: 100%; text-align: center; }
+.brand { margin: 0 0 12px; color: #ad285e; font-size: 18px; font-weight: 700; }
+h1 { margin: 0; font-size: clamp(24px, 4vw, 36px); }
+.subtitle { margin: 10px 0 0; color: #766570; font-size: 15px; }
+
+/* The flower blooms on arrival, then gently sways. */
+.big-flower {
+  position: relative;
+  width: min(75vw, 360px);
+  aspect-ratio: 1 / 1.35;
+  margin: 28px auto 20px;
+  transform-origin: bottom center;
+  animation: flower-sway 6s ease-in-out 2.8s infinite;
+}
+
+.stem {
+  position: absolute;
+  top: 36%; bottom: 0; left: 48.5%;
+  width: 3%;
+  border-radius: 20px;
+  background: linear-gradient(90deg, #648f64, #91b885);
+  transform-origin: bottom center;
+  animation: stem-grow 1s ease-out both;
+}
+
+.leaf {
+  position: absolute;
+  top: 68%; width: 28%; height: 11%;
+  background: linear-gradient(135deg, #acd39b, #709b6c);
+  animation: leaf-grow 1s ease-out 0.7s both;
+}
+.leaf-left {
+  --leaf-angle: 15deg;
+  right: 50%;
+  border-radius: 0 100% 0 100%;
+  transform-origin: right bottom;
+  transform: rotate(var(--leaf-angle));
+}
+.leaf-right {
+  --leaf-angle: -15deg;
+  left: 50%; top: 59%;
+  border-radius: 100% 0 100% 0;
+  transform-origin: left bottom;
+  transform: rotate(var(--leaf-angle));
+}
+
+.blossom { position: absolute; inset: 0 0 auto; width: 100%; aspect-ratio: 1; }
+.petal {
+  --angle: 0deg;
+  --delay: 0.3s;
+  position: absolute;
+  bottom: 50%; left: 34%; width: 32%; height: 49%;
+  border: 1px solid #f3a7c480;
+  border-radius: 55% 55% 42% 42%;
+  background: linear-gradient(to top, #d55488, #ef91b5 55%, #ffd4e6);
+  box-shadow: inset 5px 0 15px #ffffff30;
+  transform-origin: center bottom;
+  transform: rotate(var(--angle)) scale(1);
+  animation: petal-bloom 1.8s cubic-bezier(0.22, 1, 0.36, 1) var(--delay) both;
+}
+.petal:nth-child(2) { --angle: 45deg; --delay: 0.4s; }
+.petal:nth-child(3) { --angle: 90deg; --delay: 0.5s; }
+.petal:nth-child(4) { --angle: 135deg; --delay: 0.6s; }
+.petal:nth-child(5) { --angle: 180deg; --delay: 0.7s; }
+.petal:nth-child(6) { --angle: 225deg; --delay: 0.8s; }
+.petal:nth-child(7) { --angle: 270deg; --delay: 0.9s; }
+.petal:nth-child(8) { --angle: 315deg; --delay: 1s; }
+
+.flower-center {
+  position: absolute;
+  top: 39%; left: 39%; width: 22%; height: 22%;
+  border: 5px solid #f9d985;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffe9a8, #efbc55);
+  box-shadow: 0 4px 12px #af65412b;
+  animation: center-appear 1.3s ease-out 0.6s both;
+}
+
+#open-flower {
+  min-height: 50px;
+  min-width: 180px;
+  padding: 14px 32px;
+  border: 0;
+  border-radius: 999px;
+  background: #ad285e;
+  color: white;
+  font: 700 14px "Segoe UI", Arial, sans-serif;
+  letter-spacing: 2px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px #ad285e24;
+}
+#open-flower:hover { background: #90204d; }
+button:focus-visible, a:focus-visible { outline: 3px solid #ad285e; outline-offset: 5px; }
+
+.flower-message {
+  max-width: 360px;
+  margin: 20px auto 0;
+  padding: 22px;
+  border-radius: 16px;
+  background: #fff9fc;
+  box-shadow: 0 8px 24px #ad285e12;
+  animation: message-appear 0.4s ease-out;
+}
+.flower-message h2 { margin: 0 0 10px; font-size: 20px; }
+.flower-message p { margin: 0; color: #766570; font-size: 14px; line-height: 1.6; }
+.back-link { display: block; width: fit-content; margin: 24px auto 0; color: #85475f; font-size: 13px; }
+
+@keyframes petal-bloom {
+  from { opacity: 0; transform: rotate(var(--angle)) scale(0.08); }
+  to { opacity: 1; transform: rotate(var(--angle)) scale(1); }
+}
+@keyframes stem-grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes leaf-grow {
+  from { transform: rotate(var(--leaf-angle)) scale(0); }
+  to { transform: rotate(var(--leaf-angle)) scale(1); }
+}
+@keyframes center-appear { from { opacity: 0; transform: scale(0.2); } to { opacity: 1; transform: scale(1); } }
+@keyframes flower-sway { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
+@keyframes message-appear { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; }
+}

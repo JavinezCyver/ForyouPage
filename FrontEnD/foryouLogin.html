@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f8c8dc">
+  <title>Log in | ForYou</title>
+  <link rel="stylesheet" href="foryouLogin.css">
+  <script src="foryou.js" defer></script>
+</head>
+<body>
+  <div class="flower-garden" aria-hidden="true">
+    <div class="flower flower-one">
+      <div class="blossom"><i></i><i></i><i></i><i></i><i></i><i></i><span class="flower-center"></span></div>
+    </div>
+    <div class="flower flower-two">
+      <div class="blossom"><i></i><i></i><i></i><i></i><i></i><i></i><span class="flower-center"></span></div>
+    </div>
+    <div class="flower flower-three">
+      <div class="blossom"><i></i><i></i><i></i><i></i><i></i><i></i><span class="flower-center"></span></div>
+    </div>
+    <div class="flower flower-four">
+      <div class="blossom"><i></i><i></i><i></i><i></i><i></i><i></i><span class="flower-center"></span></div>
+    </div>
+    <div class="flower flower-five">
+      <div class="blossom"><i></i><i></i><i></i><i></i><i></i><i></i><span class="flower-center"></span></div>
+    </div>
+    <div class="flower flower-six">
+      <div class="blossom"><i></i><i></i><i></i><i></i><i></i><i></i><span class="flower-center"></span></div>
+    </div>
+    <div class="flower flower-seven">
+      <div class="blossom"><i></i><i></i><i></i><i></i><i></i><i></i><span class="flower-center"></span></div>
+    </div>
+    <div class="flower flower-eight">
+      <div class="blossom"><i></i><i></i><i></i><i></i><i></i><i></i><span class="flower-center"></span></div>
+    </div>
+    <div class="flower flower-nine">
+      <div class="blossom"><i></i><i></i><i></i><i></i><i></i><i></i><span class="flower-center"></span></div>
+    </div>
+    <div class="flower flower-ten">
+      <div class="blossom"><i></i><i></i><i></i><i></i><i></i><i></i><span class="flower-center"></span></div>
+    </div>
+    <div class="flower flower-eleven">
+      <div class="blossom"><i></i><i></i><i></i><i></i><i></i><i></i><span class="flower-center"></span></div>
+    </div>
+    <div class="flower flower-twelve">
+      <div class="blossom"><i></i><i></i><i></i><i></i><i></i><i></i><span class="flower-center"></span></div>
+    </div>
+    <div class="grass">
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+  <main class="login-card" aria-labelledby="login-title">
+    <p class="brand">ForYou</p>
+    <h1 id="login-title">Log in</h1>
+    <p class="description">Welcome back! Enter your details below.</p>
+
+    <form id="login-form" action="#" method="post">
+      <div class="field">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username" autocomplete="username" aria-describedby="login-error" required>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" aria-describedby="login-error" required>
+      </div>
+
+      <label class="remember-me" for="remember">
+        <input type="checkbox" id="remember" name="remember" value="yes">
+        <span>Keep me logged in</span>
+      </label>
+
+      <p id="login-error" class="login-error" role="alert" hidden></p>
+      <button type="submit">Log in</button>
+    </form>
+  </main>
+</body>
+</html>
