@@ -39,7 +39,11 @@
   function savePlaylist(playlist = tracks) {
     return new Promise((resolve, reject) => {
       const transaction = database.transaction("tracks", "readwrite");
-      transaction.objectStore("tracks").put({ id: "letter", files: playlist.map((track) => track.file) });
+      transaction.objectStore("tracks").put({
+        id: "letter",
+        files: playlist.map((track) => track.file),
+        publishedNames: window.FORYOU_MEDIA.tracks.map((track) => track.name)
+      });
       transaction.oncomplete = resolve;
       transaction.onerror = () => reject(transaction.error);
       transaction.onabort = () => reject(transaction.error || new Error("Music could not be saved."));
@@ -264,6 +268,12 @@
       files = files.map((file) => window.FORYOU_MEDIA.tracks.find((track) =>
         track.replaces && track.replaces === (typeof file === "string" ? file : file.name)
       ) || file);
+      if (saved) {
+        // Add newly published songs while preserving songs the visitor removed.
+        const known = new Set(saved.publishedNames || window.FORYOU_MEDIA.tracks.filter((track) => !track.added).map((track) => track.name));
+        const present = new Set(files.map((file) => typeof file === "string" ? file : file.name));
+        files = files.concat(window.FORYOU_MEDIA.tracks.filter((track) => !known.has(track.name) && !present.has(track.name)));
+      }
     } catch {
       database = null;
       status.textContent = "Songs you add will be available for this visit only.";
