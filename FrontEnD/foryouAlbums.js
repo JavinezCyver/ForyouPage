@@ -56,21 +56,30 @@
     return item.file.type.startsWith("video/");
   }
 
-  function cachedPhoto(item) {
+  function cachedPhoto(item, priority = "low") {
     if (!photoCache.has(item)) {
       const image = new Image();
+      image.fetchPriority = priority;
       image.src = item.url;
       image.draggable = false;
       photoCache.set(item, image);
       // Decode ahead of navigation; display errors are reported only for the active item.
       image.decode().catch(() => {});
     }
-    return photoCache.get(item);
+    const image = photoCache.get(item);
+    if (priority === "high") image.fetchPriority = "high";
+    return image;
+  }
+
+  function preloadAlbum(album) {
+    album.items.forEach((item) => {
+      if (!isVideo(item)) cachedPhoto(item);
+    });
   }
 
   function preloadNearby(album, index) {
     album.items.slice(Math.max(0, index - 2), index + 3).forEach((item) => {
-      if (!isVideo(item)) cachedPhoto(item);
+      if (!isVideo(item)) cachedPhoto(item, "high");
     });
   }
 
@@ -85,7 +94,7 @@
       video.setAttribute("aria-label", `Video ${index + 1} of ${count}: ${item.file.name}`);
       return video;
     }
-    const image = cachedPhoto(item);
+    const image = cachedPhoto(item, "high");
     image.className = "gallery-image";
     image.alt = `Photo ${index + 1} of ${count}: ${item.file.name}`;
     return image;
@@ -202,6 +211,7 @@
     title.textContent = `Album ${id}`;
     viewerStatus.textContent = "";
     renderMedia();
+    preloadAlbum(albums.get(id));
     viewer.showModal();
   }
 
@@ -300,7 +310,11 @@
   document.querySelectorAll("[data-album]").forEach((card) => {
     const album = { id: card.dataset.album, card, items: [], loading: true, input: card.querySelector(".album-input"), add: card.querySelector(".album-add") };
     albums.set(album.id, album);
-    card.querySelector(".album-open").addEventListener("click", () => openAlbum(album.id));
+    const open = card.querySelector(".album-open");
+    open.addEventListener("click", () => openAlbum(album.id));
+    ["pointerenter", "focus", "pointerdown"].forEach((type) => {
+      open.addEventListener(type, () => preloadAlbum(album));
+    });
     album.add.addEventListener("click", () => album.input.click());
     album.input.addEventListener("change", () => addMedia(album));
   });
@@ -322,17 +336,27 @@
   stage.addEventListener("pointerdown", (event) => {
     if (event.target.closest("video")) return;
     if (!event.isPrimary || event.button !== 0) return;
-    pointerStart = { x: event.clientX, y: event.clientY, id: event.pointerId };
+    pointerStart = { x: event.clientX, y: event.clientY, id: event.pointerId, moved: false };
     stage.setPointerCapture(event.pointerId);
   });
-  stage.addEventListener("pointerup", (event) => {
-    if (!pointerStart || pointerStart.id !== event.pointerId) return;
+  function advanceSwipe(event) {
+    if (!pointerStart || pointerStart.id !== event.pointerId || pointerStart.moved) return;
     const dx = event.clientX - pointerStart.x;
     const dy = event.clientY - pointerStart.y;
+    if (Math.abs(dx) >= 24 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+      // Respond during the swipe instead of waiting for the finger to lift.
+      pointerStart.moved = true;
+      moveMedia(dx < 0 ? 1 : -1);
+    }
+  }
+  stage.addEventListener("pointermove", advanceSwipe);
+  stage.addEventListener("pointerup", (event) => {
+    if (!pointerStart || pointerStart.id !== event.pointerId) return;
+    advanceSwipe(event);
     pointerStart = null;
-    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.2) moveMedia(dx < 0 ? 1 : -1);
   });
   stage.addEventListener("pointercancel", () => { pointerStart = null; });
+  stage.addEventListener("lostpointercapture", () => { pointerStart = null; });
 
   (async () => {
     // Start with published files even when browser storage is unavailable.
