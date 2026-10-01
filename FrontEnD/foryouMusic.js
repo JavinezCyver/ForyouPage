@@ -269,6 +269,11 @@
       if (tracks.length) {
         attachTrack(0);
         status.textContent = "Press play to start the playlist. Songs play in order, then repeat.";
+      } else {
+        audio.removeAttribute("src");
+        audio.hidden = true;
+        audio.load();
+        updatePlaylist();
       }
     } finally {
       choose.disabled = false;
