@@ -254,16 +254,22 @@
   }
 
   (async () => {
+    let files = window.FORYOU_MEDIA.tracks;
     try {
       database = await openStorage();
       const saved = await readPlaylist();
       // Preserve the single song saved by the previous music player.
-      const files = saved?.files || (saved?.file ? [saved.file] : []);
-      files.forEach((file) => tracks.push({ file, url: URL.createObjectURL(file) }));
-      if (tracks.length) await playTrack(0);
+      if (saved) files = saved.files || (saved.file ? [saved.file] : []);
     } catch {
       database = null;
-      status.textContent = "You can add songs for this visit. Browser storage is unavailable.";
+      status.textContent = "Songs you add will be available for this visit only.";
+    }
+    try {
+      files.forEach((file) => tracks.push(window.foryouMediaItem(file)));
+      if (tracks.length) {
+        attachTrack(0);
+        status.textContent = "Press play to start the playlist. Songs play in order, then repeat.";
+      }
     } finally {
       choose.disabled = false;
     }

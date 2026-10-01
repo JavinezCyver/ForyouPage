@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#f8c8dc">
   <title>A little letter | ForYou</title>
   <link rel="stylesheet" href="foryouBody2.css">
+  <script src="foryouMedia.js" defer></script>
   <script src="foryouAlbums.js" defer></script>
   <script src="foryouMusic.js" defer></script>
 </head>
@@ -42,7 +43,7 @@
       </div>
       <audio id="letter-music" controls preload="auto" aria-label="Letter background music" hidden></audio>
       <ol id="music-playlist" class="music-playlist" aria-label="Songs in playback order" hidden></ol>
-      <p id="music-status" role="status" aria-live="polite">Songs play in order automatically, then the playlist repeats. Saved in this browser.</p>
+      <p id="music-status" role="status" aria-live="polite">Press play to enjoy the playlist. Songs play in order, then repeat. Songs you add here are saved on this device.</p>
     </section>
 
     <div class="keepsake-layout">
@@ -102,7 +103,7 @@
       </section>
     </div>
 
-    <p id="album-status" class="album-status" role="status" aria-live="polite">Choose “Add photos / videos” to fill an album. Photos and videos are saved in this browser.</p>
+    <p id="album-status" class="album-status" role="status" aria-live="polite">Open an album to see our memories. Photos and videos you add here are saved on this device.</p>
     <footer><a href="foryouBody.html">&#8592; Back to your flower</a></footer>
   </main>
   <dialog id="album-viewer" aria-labelledby="album-viewer-title" aria-describedby="viewer-help">
@@ -127,4 +128,3 @@
   </dialog>
 </body>
 </html>
-

@@ -340,22 +340,29 @@
   stage.addEventListener("pointercancel", () => { pointerStart = null; });
 
   (async () => {
+    // Start with published files even when browser storage is unavailable.
+    albums.forEach((album) => {
+      album.items = (window.FORYOU_MEDIA.albums[album.id] || []).map(window.foryouMediaItem);
+      updateCover(album);
+    });
     try {
       database = await openDatabase();
       const savedAlbums = await loadSavedAlbums();
       for (const saved of savedAlbums) {
         const album = albums.get(saved.id);
         if (!album) continue;
-        album.items = saved.files.map((file) => ({ file, url: URL.createObjectURL(file) }));
+        album.items.forEach((item) => URL.revokeObjectURL(item.url));
+        album.items = saved.files.map(window.foryouMediaItem);
         updateCover(album);
       }
       if (viewer.open) renderMedia();
     } catch {
       database = null;
-      announce("Browser storage is unavailable. You can add photos and videos for this visit.");
+      announce("Our published memories are available. Photos and videos you add will be available for this visit only.");
     } finally {
       albums.forEach((album) => { album.loading = false; album.add.disabled = false; });
       updateControls();
+      if (viewer.open) renderMedia();
     }
   })();
 })();
