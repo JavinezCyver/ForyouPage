@@ -17,6 +17,33 @@
   let editingPlaylist = false;
   audio.volume = 0.3;
   audio.loop = false;
+  let waitingForFirstPlay = true;
+  let startingMusic = false;
+  const startEvents = ["click", "touchend", "keydown"];
+
+  async function startMusic() {
+    if (!waitingForFirstPlay || startingMusic || !tracks.length || playingVideo) return;
+    startingMusic = true;
+    const playing = await tryPlaying();
+    startingMusic = false;
+    if (playing || !waitingForFirstPlay) {
+      status.textContent = "Songs play in order automatically, then the playlist repeats.";
+    } else if (!playingVideo) {
+      status.textContent = "Tap anywhere or press play to start the music. Songs play in order, then repeat.";
+    }
+  }
+
+  function startOnInteraction(event) {
+    // Let the music controls and album videos handle their own playback.
+    if (event.target.closest?.(".music-player, video")) return;
+    startMusic();
+  }
+
+  startEvents.forEach((type) => document.addEventListener(type, startOnInteraction, true));
+  audio.addEventListener("play", () => {
+    waitingForFirstPlay = false;
+    startEvents.forEach((type) => document.removeEventListener(type, startOnInteraction, true));
+  }, { once: true });
 
   function openStorage() {
     return new Promise((resolve, reject) => {
@@ -282,7 +309,7 @@
       files.forEach((file) => tracks.push(window.foryouMediaItem(file)));
       if (tracks.length) {
         attachTrack(0);
-        status.textContent = "Press play to start the playlist. Songs play in order, then repeat.";
+        await startMusic();
       } else {
         audio.removeAttribute("src");
         audio.hidden = true;
