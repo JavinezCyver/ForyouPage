@@ -17,6 +17,7 @@
   let mediaIndex = 0;
   let generation = 0;
   let pointerStart = null;
+  let slide = null;
   const photoCache = new WeakMap();
 
   function announce(message) {
@@ -127,8 +128,47 @@
   }
 
   function clearStage() {
+    finishSlide();
     stage.querySelectorAll("video").forEach(releaseMedia);
     stage.replaceChildren();
+  }
+
+  function finishSlide() {
+    if (!slide) return;
+    const previousSlide = slide;
+    slide = null;
+    previousSlide.animations.forEach((animation) => animation.cancel());
+    releaseMedia(previousSlide.outgoing);
+    previousSlide.outgoing.remove();
+  }
+
+  function showMedia(media, direction) {
+    finishSlide();
+    const outgoing = stage.querySelector(".gallery-image");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!direction || !outgoing || outgoing === media || reducedMotion || media.tagName === "VIDEO" || outgoing.tagName === "VIDEO") {
+      clearStage();
+      stage.replaceChildren(media);
+      return;
+    }
+    stage.append(media);
+    const options = { duration: 180, easing: "cubic-bezier(0.22, 1, 0.36, 1)" };
+    const animations = [
+      outgoing.animate([
+        { transform: "translate3d(0, 0, 0)", opacity: 1 },
+        { transform: `translate3d(${-direction * 100}%, 0, 0)`, opacity: 0 }
+      ], { ...options, fill: "forwards" }),
+      media.animate([
+        { transform: `translate3d(${direction * 100}%, 0, 0)`, opacity: 0.5 },
+        { transform: "translate3d(0, 0, 0)", opacity: 1 }
+      ], options)
+    ];
+    const currentSlide = { outgoing, animations };
+    slide = currentSlide;
+    // Navigation stays enabled; a new swipe settles this slide and starts the next.
+    Promise.all(animations.map((animation) => animation.finished)).then(() => {
+      if (slide === currentSlide) finishSlide();
+    }).catch(() => { /* A newer swipe or closing the viewer cancelled this slide. */ });
   }
 
   function updateCover(album) {
@@ -183,8 +223,9 @@
     counter.textContent = count ? `${mediaIndex + 1} / ${count}` : "0 items";
   }
 
-  function renderMedia() {
+  function renderMedia(direction = 0) {
     const token = ++generation;
+    finishSlide();
     const album = albums.get(activeId);
     if (album && album.items.length) {
       const media = makeMedia(album.items[mediaIndex], mediaIndex, album.items.length);
@@ -204,8 +245,7 @@
           if (!media.isConnected) releaseMedia(media);
           return;
         }
-        clearStage();
-        stage.replaceChildren(media);
+        showMedia(media, direction);
         stage.setAttribute("aria-busy", "false");
         viewerStatus.textContent = "";
         updateControls();
@@ -250,7 +290,7 @@
 
     mediaIndex = destination;
     viewerStatus.textContent = "";
-    renderMedia();
+    renderMedia(direction);
   }
 
   async function addMedia(album) {
