@@ -15,9 +15,9 @@
   let database = null;
   let activeId = null;
   let mediaIndex = 0;
-  let changingMedia = false;
   let generation = 0;
   let pointerStart = null;
+  const photoCache = new WeakMap();
 
   function announce(message) {
     status.textContent = message;
@@ -56,6 +56,24 @@
     return item.file.type.startsWith("video/");
   }
 
+  function cachedPhoto(item) {
+    if (!photoCache.has(item)) {
+      const image = new Image();
+      image.src = item.url;
+      image.draggable = false;
+      photoCache.set(item, image);
+      // Decode ahead of navigation; display errors are reported only for the active item.
+      image.decode().catch(() => {});
+    }
+    return photoCache.get(item);
+  }
+
+  function preloadNearby(album, index) {
+    album.items.slice(Math.max(0, index - 2), index + 3).forEach((item) => {
+      if (!isVideo(item)) cachedPhoto(item);
+    });
+  }
+
   function makeMedia(item, index, count) {
     if (isVideo(item)) {
       const video = document.createElement("video");
@@ -67,11 +85,9 @@
       video.setAttribute("aria-label", `Video ${index + 1} of ${count}: ${item.file.name}`);
       return video;
     }
-    const image = new Image();
+    const image = cachedPhoto(item);
     image.className = "gallery-image";
-    image.src = item.url;
     image.alt = `Photo ${index + 1} of ${count}: ${item.file.name}`;
-    image.draggable = false;
     return image;
   }
 
@@ -127,7 +143,9 @@
       return;
     }
     const item = album.items[0];
-    const media = makeMedia(item, 0, count);
+    // Covers use separate elements so a cached gallery photo can stay in the viewer.
+    const media = isVideo(item) ? makeMedia(item, 0, count) : new Image();
+    if (!isVideo(item)) media.src = item.url;
     media.className = "album-cover-media";
     if (isVideo(item)) {
       media.controls = false;
@@ -149,21 +167,26 @@
   function updateControls() {
     const album = albums.get(activeId);
     const count = album ? album.items.length : 0;
-    previous.disabled = changingMedia || album?.loading || mediaIndex <= 0 || !count;
-    next.disabled = changingMedia || album?.loading || mediaIndex >= count - 1 || !count;
+    previous.disabled = album?.loading || mediaIndex <= 0 || !count;
+    next.disabled = album?.loading || mediaIndex >= count - 1 || !count;
     viewerAdd.disabled = !album || album.loading;
-    viewerRemove.disabled = !album || album.loading || changingMedia || !count;
+    viewerRemove.disabled = !album || album.loading || !count;
     counter.textContent = count ? `${mediaIndex + 1} / ${count}` : "0 items";
   }
 
   function renderMedia() {
-    generation += 1;
-    changingMedia = false;
-    delete stage.dataset.direction;
+    const token = ++generation;
     clearStage();
     const album = albums.get(activeId);
     if (album && album.items.length) {
-      stage.replaceChildren(makeMedia(album.items[mediaIndex], mediaIndex, album.items.length));
+      const media = makeMedia(album.items[mediaIndex], mediaIndex, album.items.length);
+      stage.replaceChildren(media);
+      preloadNearby(album, mediaIndex);
+      readyMedia(media).catch(() => {
+        if (token === generation && viewer.open) {
+          announce("This file cannot be displayed. Try a supported image or an MP4 / WebM video.");
+        }
+      });
     } else {
       const empty = document.createElement("p");
       empty.className = "gallery-empty";
@@ -182,43 +205,15 @@
     viewer.showModal();
   }
 
-  async function moveMedia(direction) {
+  function moveMedia(direction) {
     const album = albums.get(activeId);
-    if (!viewer.open || !album || album.loading || changingMedia) return;
+    if (!viewer.open || !album || album.loading) return;
     const destination = mediaIndex + direction;
     if (destination < 0 || destination >= album.items.length) return;
 
-    changingMedia = true;
-    const token = ++generation;
-    updateControls();
-    const incoming = makeMedia(album.items[destination], destination, album.items.length);
-    try {
-      await readyMedia(incoming);
-      if (token !== generation || !viewer.open) return;
-      const outgoing = stage.querySelector(".gallery-image");
-      if (outgoing.tagName === "VIDEO") outgoing.pause();
-      incoming.classList.add("incoming");
-      outgoing.classList.add("outgoing");
-      stage.dataset.direction = direction > 0 ? "next" : "previous";
-      stage.append(incoming);
-      mediaIndex = destination;
-      updateControls();
-      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      await new Promise((resolve) => setTimeout(resolve, reducedMotion ? 0 : 360));
-      if (token !== generation) return;
-      releaseMedia(outgoing);
-      outgoing.remove();
-      incoming.classList.remove("incoming");
-      delete stage.dataset.direction;
-    } catch {
-      announce("This file cannot be displayed. Try a supported image or an MP4 / WebM video.");
-    } finally {
-      if (!incoming.isConnected) releaseMedia(incoming);
-      if (token === generation) {
-        changingMedia = false;
-        updateControls();
-      }
-    }
+    mediaIndex = destination;
+    viewerStatus.textContent = "";
+    renderMedia();
   }
 
   async function addMedia(album) {
@@ -269,7 +264,7 @@
 
   async function removeMedia() {
     const album = albums.get(activeId);
-    if (!viewer.open || !album || album.loading || changingMedia || !album.items.length) return;
+    if (!viewer.open || !album || album.loading || !album.items.length) return;
 
     const removedIndex = mediaIndex;
     const [removed] = album.items.splice(removedIndex, 1);
@@ -311,7 +306,7 @@
   });
 
   document.getElementById("close-album").addEventListener("click", () => viewer.close());
-  viewer.addEventListener("close", () => { generation += 1; changingMedia = false; activeId = null; pointerStart = null; clearStage(); });
+  viewer.addEventListener("close", () => { generation += 1; activeId = null; pointerStart = null; clearStage(); });
   viewerAdd.addEventListener("click", () => albums.get(activeId)?.input.click());
   viewerRemove.addEventListener("click", removeMedia);
   previous.addEventListener("click", () => moveMedia(-1));
@@ -344,6 +339,7 @@
     albums.forEach((album) => {
       album.items = (window.FORYOU_MEDIA.albums[album.id] || []).map(window.foryouMediaItem);
       updateCover(album);
+      preloadNearby(album, 0);
     });
     try {
       database = await openDatabase();
@@ -354,6 +350,7 @@
         album.items.forEach((item) => URL.revokeObjectURL(item.url));
         album.items = saved.files.map(window.foryouMediaItem);
         updateCover(album);
+        preloadNearby(album, 0);
       }
       if (viewer.open) renderMedia();
     } catch {

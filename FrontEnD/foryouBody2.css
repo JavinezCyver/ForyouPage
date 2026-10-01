@@ -162,7 +162,7 @@ button:disabled { cursor: default; opacity: 0.45; }
 .album-status { margin: 30px auto 0; max-width: 520px; color: #805769; font-size: 13px; line-height: 1.6; text-align: center; }
 body:has(#album-viewer[open]) { overflow: hidden; }
 
-/* A modal album viewer with directional slide transitions. */
+/* A modal album viewer with immediate photo navigation. */
 #album-viewer { width: min(760px, calc(100% - 24px)); max-height: 92vh; max-height: 92svh; padding: 22px; border: 0; border-radius: 20px; background: #fffaf7; color: #49303d; box-shadow: 0 24px 80px #39263250; }
 #album-viewer[open] { animation: album-enter 0.3s ease-out; }
 #album-viewer::backdrop { background: #392632b3; backdrop-filter: blur(6px); }
@@ -176,14 +176,6 @@ body:has(#album-viewer[open]) { overflow: hidden; }
 .viewer-controls { display: flex; align-items: center; justify-content: center; gap: 24px; margin-top: 16px; }
 #photo-counter { min-width: 100px; margin: 0; text-align: center; color: #805769; font-size: 14px; }
 #viewer-help { margin: 14px 0 0; color: #805769; text-align: center; font-size: 12px; }
-.gallery-stage[data-direction="next"] .outgoing { animation: slide-out-left 0.35s ease-in-out both; }
-.gallery-stage[data-direction="next"] .incoming { animation: slide-in-right 0.35s ease-in-out both; }
-.gallery-stage[data-direction="previous"] .outgoing { animation: slide-out-right 0.35s ease-in-out both; }
-.gallery-stage[data-direction="previous"] .incoming { animation: slide-in-left 0.35s ease-in-out both; }
-@keyframes slide-out-left { to { transform: translateX(-100%); opacity: 0; } }
-@keyframes slide-in-right { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-@keyframes slide-out-right { to { transform: translateX(100%); opacity: 0; } }
-@keyframes slide-in-left { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 @keyframes album-enter { from { opacity: 0; transform: translateY(24px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
 /* CSS flowers decorate the edges behind the content. */
