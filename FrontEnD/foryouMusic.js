@@ -306,6 +306,10 @@
       status.textContent = "Songs you add will be available for this visit only.";
     }
     try {
+      // Keep saved published songs in the current order, followed by personal uploads.
+      const publishedOrder = new Map(window.FORYOU_MEDIA.tracks.map((track, index) => [track.name, index]));
+      const rank = (file) => publishedOrder.get(typeof file === "string" ? file : file.name) ?? publishedOrder.size;
+      files = [...files].sort((a, b) => rank(a) - rank(b));
       files.forEach((file) => tracks.push(window.foryouMediaItem(file)));
       if (tracks.length) {
         attachTrack(0);
