@@ -111,14 +111,7 @@
       button.textContent = track.file.name;
       button.setAttribute("aria-current", String(index === currentIndex));
       button.addEventListener("click", () => playTrack(index));
-      const remove = document.createElement("button");
-      remove.type = "button";
-      remove.className = "music-remove";
-      remove.textContent = "Remove";
-      remove.setAttribute("aria-label", `Remove ${track.file.name}`);
-      remove.disabled = editingPlaylist;
-      remove.addEventListener("click", () => removeTrack(track));
-      row.append(button, remove);
+      row.append(button);
       item.append(row);
       list.append(item);
     });
