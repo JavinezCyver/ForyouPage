@@ -179,24 +179,50 @@
     previous.disabled = album?.loading || mediaIndex <= 0 || !count;
     next.disabled = album?.loading || mediaIndex >= count - 1 || !count;
     viewerAdd.disabled = !album || album.loading;
-    viewerRemove.disabled = !album || album.loading || !count;
+    viewerRemove.disabled = !album || album.loading || !count || stage.getAttribute("aria-busy") === "true";
     counter.textContent = count ? `${mediaIndex + 1} / ${count}` : "0 items";
   }
 
   function renderMedia() {
     const token = ++generation;
-    clearStage();
     const album = albums.get(activeId);
     if (album && album.items.length) {
       const media = makeMedia(album.items[mediaIndex], mediaIndex, album.items.length);
-      stage.replaceChildren(media);
+      stage.querySelectorAll("video").forEach((video) => video.pause());
+      stage.setAttribute("aria-busy", "true");
+      viewerStatus.textContent = `Loading ${isVideo(album.items[mediaIndex]) ? "video" : "photo"} ${mediaIndex + 1}…`;
+      if (!stage.querySelector(".gallery-image")) {
+        const loading = document.createElement("p");
+        loading.className = "gallery-empty";
+        loading.textContent = "Loading your memory…";
+        stage.replaceChildren(loading);
+      }
       preloadNearby(album, mediaIndex);
-      readyMedia(media).catch(() => {
-        if (token === generation && viewer.open) {
+      // Preserve the visible photo while loading. Rapid navigation always wins over older requests.
+      readyMedia(media).then(() => {
+        if (token !== generation || !viewer.open) {
+          if (!media.isConnected) releaseMedia(media);
+          return;
+        }
+        clearStage();
+        stage.replaceChildren(media);
+        stage.setAttribute("aria-busy", "false");
+        viewerStatus.textContent = "";
+        updateControls();
+      }).catch(() => {
+        if (!media.isConnected) releaseMedia(media);
+        if (token === generation) {
+          stage.setAttribute("aria-busy", "false");
+          updateControls();
+          if (!stage.querySelector(".gallery-image")) {
+            stage.firstElementChild.textContent = "This memory could not be loaded. Try another photo.";
+          }
           announce("This file cannot be displayed. Try a supported image or an MP4 / WebM video.");
         }
       });
     } else {
+      clearStage();
+      stage.setAttribute("aria-busy", "false");
       const empty = document.createElement("p");
       empty.className = "gallery-empty";
       empty.textContent = "Your memories belong here. Add photos or videos to get started.";
@@ -210,6 +236,7 @@
     mediaIndex = 0;
     title.textContent = `Album ${id}`;
     viewerStatus.textContent = "";
+    clearStage();
     renderMedia();
     preloadAlbum(albums.get(id));
     viewer.showModal();
@@ -320,7 +347,7 @@
   });
 
   document.getElementById("close-album").addEventListener("click", () => viewer.close());
-  viewer.addEventListener("close", () => { generation += 1; activeId = null; pointerStart = null; clearStage(); });
+  viewer.addEventListener("close", () => { generation += 1; activeId = null; pointerStart = null; clearStage(); stage.setAttribute("aria-busy", "false"); });
   viewerAdd.addEventListener("click", () => albums.get(activeId)?.input.click());
   viewerRemove.addEventListener("click", removeMedia);
   previous.addEventListener("click", () => moveMedia(-1));
