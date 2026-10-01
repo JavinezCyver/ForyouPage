@@ -104,6 +104,10 @@ h1 { margin: 0; font-size: clamp(24px, 4vw, 36px); }
   box-shadow: 0 8px 20px #ad285e24;
 }
 #open-flower:hover { background: #90204d; }
+#open-flower:disabled { cursor: wait; opacity: 0.7; }
+.letter-frame { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; background: #f8c8dc; z-index: 10; }
+body.letter-open { overflow: hidden; }
+body.letter-open .flower-page { display: none; }
 button:focus-visible, a:focus-visible { outline: 3px solid #ad285e; outline-offset: 5px; }
 
 .flower-message {

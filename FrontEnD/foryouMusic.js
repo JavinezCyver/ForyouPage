@@ -32,6 +32,7 @@
       status.textContent = "Tap anywhere or press play to start the music. Songs play in order, then repeat.";
     }
   }
+  window.foryouStartMusic = startMusic;
 
   function startOnInteraction(event) {
     // Let the music controls and album videos handle their own playback.
@@ -284,7 +285,7 @@
     });
   }
 
-  (async () => {
+  window.foryouMusicReady = (async () => {
     let files = window.FORYOU_MEDIA.tracks;
     try {
       database = await openStorage();
@@ -313,7 +314,8 @@
       files.forEach((file) => tracks.push(window.foryouMediaItem(file)));
       if (tracks.length) {
         attachTrack(0);
-        await startMusic();
+        // The flower page starts its preloaded player from the OPEN ME click.
+        if (new URLSearchParams(window.location.search).get("from") !== "flower") await startMusic();
       } else {
         audio.removeAttribute("src");
         audio.hidden = true;
