@@ -157,6 +157,7 @@ button:disabled { cursor: default; opacity: 0.45; }
 .album-add:hover:not(:disabled) { background: #f8dfeb; }
 .viewer-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 14px; }
 .viewer-actions .album-add { margin: 0; }
+.album-add[hidden], .viewer-actions[hidden] { display: none; }
 .album-remove { min-height: 38px; padding: 8px 14px; border: 1px solid #cf8a99; border-radius: 8px; background: #fff0f2; color: #a12845; font-size: 13px; }
 .album-remove:hover:not(:disabled) { background: #f9dce2; }
 .album-status { margin: 30px auto 0; max-width: 520px; color: #805769; font-size: 13px; line-height: 1.6; text-align: center; }

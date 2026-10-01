@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#f8c8dc">
   <title>A little letter | ForYou</title>
-  <link rel="stylesheet" href="foryouBody2.css?v=20261001-swipe3">
+  <link rel="stylesheet" href="foryouBody2.css?v=20261001-controls2">
   <script src="foryouMedia.js" defer></script>
   <script src="foryouAlbums.js?v=20261001-swipe3" defer></script>
   <script src="foryouMusic.js?v=20261001-controls1" defer></script>
@@ -120,7 +120,7 @@
             <span class="album-title">Album 1</span><span class="album-count" data-count>12 photos</span>
           </button>
           <figcaption>A favorite moment</figcaption>
-          <button class="album-add" type="button" disabled>Add photos / videos</button>
+          <button class="album-add" type="button" disabled hidden>Add photos / videos</button>
           <input class="album-input" type="file" accept="image/*,video/*" multiple hidden>
         </figure>
         <figure class="photo-card" data-album="2">
@@ -129,7 +129,7 @@
             <span class="album-title">Album 2</span><span class="album-count" data-count>12 photos</span>
           </button>
           <figcaption>The little things</figcaption>
-          <button class="album-add" type="button" disabled>Add photos / videos</button>
+          <button class="album-add" type="button" disabled hidden>Add photos / videos</button>
           <input class="album-input" type="file" accept="image/*,video/*" multiple hidden>
         </figure>
       </section>
@@ -154,7 +154,7 @@
             <span class="album-title">Album 3</span><span class="album-count" data-count>12 photos</span>
           </button>
           <figcaption>A reason to smile</figcaption>
-          <button class="album-add" type="button" disabled>Add photos / videos</button>
+          <button class="album-add" type="button" disabled hidden>Add photos / videos</button>
           <input class="album-input" type="file" accept="image/*,video/*" multiple hidden>
         </figure>
         <figure class="photo-card" data-album="4">
@@ -163,7 +163,7 @@
             <span class="album-title">Album 4</span><span class="album-count" data-count>12 photos ? 1 video</span>
           </button>
           <figcaption>More memories to come</figcaption>
-          <button class="album-add" type="button" disabled>Add photos / videos</button>
+          <button class="album-add" type="button" disabled hidden>Add photos / videos</button>
           <input class="album-input" type="file" accept="image/*,video/*" multiple hidden>
         </figure>
       </section>
@@ -187,7 +187,7 @@
     </div>
     <p id="viewer-help">Swipe beside videos or use the arrows. Tap a video to play.</p>
     <p id="viewer-status" class="album-status" role="status" aria-live="polite"></p>
-    <div class="viewer-actions">
+    <div class="viewer-actions" hidden>
       <button id="viewer-add" class="album-add" type="button" disabled>Add photos / videos</button>
       <button id="viewer-remove" class="album-remove" type="button" disabled>Remove item</button>
     </div>
