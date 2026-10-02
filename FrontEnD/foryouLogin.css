@@ -141,6 +141,91 @@ button:hover {
   outline-offset: 3px;
 }
 
+/* Soft clouds drift behind the flowers and login card. */
+.cloud-sky {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cloud {
+  --cloud-width: 180px;
+  --cloud-position: 10%;
+  position: absolute;
+  top: 14%;
+  left: calc(0px - var(--cloud-width));
+  width: var(--cloud-width);
+  height: calc(var(--cloud-width) * 0.3);
+  border-radius: 999px;
+  background: #fff5fa;
+  opacity: 0.7;
+  animation: cloud-drift 60s linear infinite;
+  animation-delay: -8s;
+}
+
+.cloud::before, .cloud::after {
+  content: "";
+  position: absolute;
+  bottom: 24%;
+  border-radius: 50%;
+  background: inherit;
+}
+
+.cloud::before {
+  left: 16%;
+  width: 44%;
+  height: 145%;
+}
+
+.cloud::after {
+  right: 14%;
+  width: 34%;
+  height: 110%;
+}
+
+.cloud-two {
+  --cloud-width: 240px;
+  --cloud-position: 65%;
+  top: 24%;
+  opacity: 0.5;
+  animation-duration: 85s;
+  animation-delay: -58s;
+}
+
+.cloud-three {
+  --cloud-width: 130px;
+  --cloud-position: 40%;
+  top: 8%;
+  opacity: 0.6;
+  animation-duration: 50s;
+  animation-delay: -24s;
+}
+
+.cloud-four {
+  --cloud-width: 210px;
+  --cloud-position: 20%;
+  top: 58%;
+  opacity: 0.4;
+  animation-duration: 95s;
+  animation-delay: -32s;
+}
+
+.cloud-five {
+  --cloud-width: 150px;
+  --cloud-position: 75%;
+  top: 72%;
+  opacity: 0.5;
+  animation-duration: 70s;
+  animation-delay: -54s;
+}
+
+@keyframes cloud-drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(100vw + var(--cloud-width))); }
+}
+
 /* Decorative flowers: each petal opens outward from the center. */
 .flower-garden {
   position: fixed;
@@ -397,6 +482,11 @@ button:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .cloud {
+    left: var(--cloud-position);
+    animation: none;
+  }
+
   .blossom i {
     animation: none;
     opacity: 1;
